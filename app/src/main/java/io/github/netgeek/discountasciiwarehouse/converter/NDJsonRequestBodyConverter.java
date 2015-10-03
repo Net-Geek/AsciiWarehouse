@@ -10,11 +10,12 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 
+import io.github.netgeek.discountasciiwarehouse.util.NDJsonBodyUtil;
 import okio.Buffer;
 import retrofit.Converter;
 
 final class NDJsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
-    private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=UTF-8");
+    private static final MediaType NDJSON_MEDIA_TYPE = MediaType.parse("application/ndjson; charset=UTF-8");
     private static final Charset UTF_8 = Charset.forName("UTF-8");
 
     private final Gson gson;
@@ -35,6 +36,6 @@ final class NDJsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
         } catch (IOException e) {
             throw new AssertionError(e);
         }
-        return RequestBody.create(MEDIA_TYPE, buffer.readByteString());
+        return NDJsonBodyUtil.convertToNDJson(RequestBody.create(NDJSON_MEDIA_TYPE, buffer.readByteString()));
     }
 }

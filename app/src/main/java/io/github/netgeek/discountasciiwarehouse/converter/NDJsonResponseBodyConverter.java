@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 
-import io.github.netgeek.discountasciiwarehouse.util.ResponseBodyUtil;
+import io.github.netgeek.discountasciiwarehouse.util.NDJsonBodyUtil;
 import retrofit.Converter;
 
 final class NDJsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
@@ -22,7 +22,7 @@ final class NDJsonResponseBodyConverter<T> implements Converter<ResponseBody, T>
 
     @Override
     public T convert(ResponseBody value) throws IOException {
-        value = ResponseBodyUtil.convertToJsonArray(value);
+        value = NDJsonBodyUtil.convertToJsonArray(value);
         Reader reader = value.charStream();
         try {
             return gson.fromJson(reader, type);
