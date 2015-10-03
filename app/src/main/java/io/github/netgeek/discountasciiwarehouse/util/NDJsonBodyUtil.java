@@ -27,8 +27,6 @@ public class NDJsonBodyUtil {
         // add json array syntax
         jsonResponseBodyString = "[" + jsonResponseBodyString + "]";
 
-        Log.e(ndjsonResponseBody.contentType().toString(), jsonResponseBodyString);
-
         return ResponseBody.create(ndjsonResponseBody.contentType(), jsonResponseBodyString);
     }
 
