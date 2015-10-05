@@ -2,4 +2,5 @@
     <string name="app_name">AsciiWarehouse</string>
     <string name="action_settings">Settings</string>
     <string name="search">Search</string>
+    <string name="available">available:</string>
 </resources>

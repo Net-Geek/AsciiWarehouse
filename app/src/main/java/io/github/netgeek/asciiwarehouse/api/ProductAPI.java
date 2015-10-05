@@ -13,6 +13,9 @@ public interface ProductAPI {
     Call<List<Product>> products();
 
     @GET("/api/search")
+    Call<List<Product>> productsWithLimit(@Query("limit") int limit);
+
+    @GET("/api/search")
     Call<List<Product>> productsWithTag(@Query("q") String tag);
 
 }
