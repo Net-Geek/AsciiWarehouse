@@ -1,7 +1,8 @@
-# DiscountAsciiWarehouse
-Discount Ascii Warehouse is an Android app that dynamically loads ascii products from an API.
+# AsciiWarehouse
+AsciiWarehouse is an Android app that dynamically loads ascii products from an API.
 
-    This project showcases the use of NDJson, Retrofit, Espresso (ATSL), and the Design Support Library.
+    This project showcases the use of NDJson, Retrofit, Espresso (ATSL),
+    and the Design Support Library.
 
 NDJson
 --------
