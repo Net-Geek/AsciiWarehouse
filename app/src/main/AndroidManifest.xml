@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.netgeek.discountasciiwarehouse" >
-    <uses-permission android:name="android.permission.INTERNET"/>
+    package="io.github.netgeek.asciiwarehouse" >
 
     <application
         android:allowBackup="true"
@@ -10,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".activity.ProductSelectionActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
