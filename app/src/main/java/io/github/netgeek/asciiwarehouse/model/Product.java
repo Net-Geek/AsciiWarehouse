@@ -1,9 +1,12 @@
 package io.github.netgeek.asciiwarehouse.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class Product implements Parcelable{
 
     private String type;
     private String id;
@@ -170,5 +173,48 @@ public class Product {
      */
     public void setSecondaryTextColor(int secondaryTextColor) {
         this.secondaryTextColor = secondaryTextColor;
+    }
+
+    protected Product(Parcel in) {
+        type = in.readString();
+        id = in.readString();
+        face = in.readString();
+        tags = in.createStringArrayList();
+        primaryBackgroundColor = in.readInt();
+        secondaryBackgroundColor = in.readInt();
+        primaryTextColor = in.readInt();
+        secondaryTextColor = in.readInt();
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(type);
+        dest.writeString(id);
+        dest.writeInt(size);
+        dest.writeInt(price);
+        dest.writeString(face);
+        dest.writeInt(stock);
+        dest.writeStringList(tags);
+        dest.writeInt(primaryBackgroundColor);
+        dest.writeInt(secondaryBackgroundColor);
+        dest.writeInt(primaryTextColor);
+        dest.writeInt(secondaryTextColor);
     }
 }

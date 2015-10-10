@@ -1,6 +1,7 @@
 package io.github.netgeek.asciiwarehouse.fragment;
 
 import android.databinding.DataBindingUtil;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.github.netgeek.asciiwarehouse.R;
@@ -26,7 +28,7 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Product selection fragment that houses the product recycler view
  */
 public class ProductSelectionFragment extends Fragment {
 
@@ -43,6 +45,12 @@ public class ProductSelectionFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.productArrayKey, (ArrayList<? extends Parcelable>) productsRecyclerAdapter.getProducts());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentProductSelectionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_selection, container, false);
         progressBar = fragmentProductSelectionBinding.progressbar;
@@ -51,16 +59,18 @@ public class ProductSelectionFragment extends Fragment {
         productsRecyclerAdapter = new ProductsRecyclerAdapter();
         gridLayoutManager = new GridLayoutManager(getContext(), 2);
 
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return 1;
-            }
-        });
-
         productRecyclerView.setAdapter(productsRecyclerAdapter);
         productRecyclerView.setLayoutManager(gridLayoutManager);
-        initProducts();
+
+        if(savedInstanceState == null){
+            initProducts();
+        } else {
+            initProductAPI();
+            progressBar.setVisibility(View.GONE);
+
+            List<Product> productList = savedInstanceState.getParcelableArrayList(Constants.productArrayKey);
+            productsRecyclerAdapter.setProducts(productList);
+        }
 
         return fragmentProductSelectionBinding.getRoot();
     }

@@ -61,13 +61,31 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         return mProducts.size();
     }
 
+    /**
+     * Gets all products in the adapter
+     * @return the products
+     */
     public List<Product> getProducts(){
         return mProducts;
     }
 
+    /**
+     * Replaces all of the products in the adapter
+     * @param products the products to replace current products
+     */
     public void setProducts(List<Product> products) {
         mProducts.clear();
         mProducts.addAll(products);
         notifyItemRangeInserted(0, mProducts.size() - 1);
+    }
+
+    /**
+     * Adds products to the current products
+     * @param products the products to add to the current products
+     */
+    public void addProducts(List<Product> products) {
+        int skip = mProducts.size();
+        mProducts.addAll(products);
+        notifyItemRangeInserted(skip, products.size() - 1);
     }
 }
