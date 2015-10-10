@@ -13,6 +13,11 @@ public class Product {
     private Integer stock;
     private List<String> tags = new ArrayList<>();
 
+    private int primaryBackgroundColor;
+    private int secondaryBackgroundColor;
+    private int primaryTextColor;
+    private int secondaryTextColor;
+
     /**
      * @return The type
      */
@@ -111,4 +116,59 @@ public class Product {
         this.tags = tags;
     }
 
+    /**
+     * @return The primary background color
+     */
+    public int getPrimaryBackgroundColor() {
+        return primaryBackgroundColor;
+    }
+
+    /**
+     * @param primaryBackgroundColor The primary background color
+     */
+    public void setPrimaryBackgroundColor(int primaryBackgroundColor) {
+        this.primaryBackgroundColor = primaryBackgroundColor;
+    }
+
+    /**
+     * @return The secondary background color
+     */
+    public int getSecondaryBackgroundColor() {
+        return secondaryBackgroundColor;
+    }
+
+    /**
+     * @param secondaryBackgroundColor The secondary background color
+     */
+    public void setSecondaryBackgroundColor(int secondaryBackgroundColor) {
+        this.secondaryBackgroundColor = secondaryBackgroundColor;
+    }
+
+    /**
+     * @return The primary text color
+     */
+    public int getPrimaryTextColor() {
+        return primaryTextColor;
+    }
+
+    /**
+     * @param primaryTextColor The primary text color
+     */
+    public void setPrimaryTextColor(int primaryTextColor) {
+        this.primaryTextColor = primaryTextColor;
+    }
+
+    /**
+     * @return The secondary text color
+     */
+    public int getSecondaryTextColor() {
+        return secondaryTextColor;
+    }
+
+    /**
+     * @param secondaryTextColor The secondary text color
+     */
+    public void setSecondaryTextColor(int secondaryTextColor) {
+        this.secondaryTextColor = secondaryTextColor;
+    }
 }

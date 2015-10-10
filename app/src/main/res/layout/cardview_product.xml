@@ -37,7 +37,7 @@
                     android:id="@+id/product_background"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/grey_400"
+                    android:background="@{product.primaryBackgroundColor}"
                     android:scaleType="centerCrop"/>
 
                 <TextView
@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textColor="@color/white"
+                    android:textColor="@{product.primaryTextColor}"
                     android:textSize="@{product.size}"
                     android:text="@{product.face}"
                     tools:text="( ⚆ _ ⚆ )"/>
@@ -62,7 +62,7 @@
                         android:layout_marginRight="@dimen/available_text_margin"
                         android:gravity="center"
                         android:text="@string/available"
-                        android:textColor="@color/white"
+                        android:textColor="@{product.primaryTextColor}"
                         android:textSize="15sp"/>
 
                     <TextView
@@ -73,7 +73,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_toRightOf="@id/available_text"
                         android:gravity="center"
-                        android:textColor="@color/white"
+                        android:textColor="@{product.primaryTextColor}"
                         android:textSize="15sp"
                         android:text="@{String.valueOf(product.stock)}"
                         tools:text="5"/>
@@ -87,6 +87,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@{product.secondaryBackgroundColor}"
                 android:orientation="horizontal">
 
                 <TextView
@@ -95,7 +96,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:gravity="left|center_vertical"
-                    android:textColor="@color/grey_500"
+                    android:textColor="@{product.secondaryTextColor}"
                     android:textSize="20sp"
                     android:text='@{"$" + String.format("%.2f", product.price / 100.00)}'
                     tools:text="$3.50"/>

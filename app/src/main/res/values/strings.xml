@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="search">Search</string>
     <string name="available">available:</string>
+    <string name="list_view">List view</string>
+    <string name="grid_view">Grid view</string>
 </resources>

@@ -5,14 +5,12 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import io.github.netgeek.asciiwarehouse.R;
@@ -38,6 +36,7 @@ public class ProductSelectionFragment extends Fragment {
 
     private ProductAPI productAPI;
     private ProductsRecyclerAdapter productsRecyclerAdapter;
+    private GridLayoutManager gridLayoutManager;
 
     public ProductSelectionFragment() {
     }
@@ -49,8 +48,17 @@ public class ProductSelectionFragment extends Fragment {
         productRecyclerView = fragmentProductSelectionBinding.productRecyclerview;
 
         productsRecyclerAdapter = new ProductsRecyclerAdapter();
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
+
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return 1;
+            }
+        });
+
         productRecyclerView.setAdapter(productsRecyclerAdapter);
-        productRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        productRecyclerView.setLayoutManager(gridLayoutManager);
         initProducts();
 
         return fragmentProductSelectionBinding.getRoot();
@@ -72,7 +80,8 @@ public class ProductSelectionFragment extends Fragment {
             public void onResponse(Response<List<Product>> response, Retrofit retrofit) {
                 progressBar.setVisibility(View.GONE);
                 productsRecyclerAdapter.setProducts(response.body());
-                for(Product product:response.body()){
+                for (Product product : response.body()) {
+
                     Log.e("product:", product.getFace() + " " + product.getId());
                 }
             }
@@ -92,5 +101,13 @@ public class ProductSelectionFragment extends Fragment {
                 .addConverterFactory(NDJsonConverterFactory.create())
                 .build();
         productAPI = retrofit.create(ProductAPI.class);
+    }
+
+    public void setSpanCount(int spanCount){
+        if (gridLayoutManager != null){
+            gridLayoutManager.setSpanCount(spanCount);
+            productsRecyclerAdapter.notifyDataSetChanged();
+
+        }
     }
 }

@@ -12,7 +12,9 @@ import java.util.List;
 
 import io.github.netgeek.asciiwarehouse.BR;
 import io.github.netgeek.asciiwarehouse.R;
+import io.github.netgeek.asciiwarehouse.constant.Constants;
 import io.github.netgeek.asciiwarehouse.model.Product;
+import io.github.netgeek.asciiwarehouse.util.ProductColorUtil;
 
 public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecyclerAdapter.BindingHolder> {
     private List<Product> mProducts;
@@ -43,6 +45,13 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
         Product product = mProducts.get(position);
+        int colorIndex = ProductColorUtil.getProductColorIndex(position);
+
+        product.setPrimaryBackgroundColor(Constants.PRIMARY_BACKGROUND_COLORS[colorIndex]);
+        product.setSecondaryBackgroundColor(Constants.SECONDARY_BACKGROUND_COLORS[colorIndex]);
+        product.setPrimaryTextColor(Constants.PRIMARY_TEXT_COLORS[colorIndex]);
+        product.setSecondaryTextColor(Constants.SECONDARY_TEXT_COLORS[colorIndex]);
+
         holder.getBinding().setVariable(BR.product, product);
         holder.getBinding().executePendingBindings();
     }
@@ -50,6 +59,10 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
     @Override
     public int getItemCount() {
         return mProducts.size();
+    }
+
+    public List<Product> getProducts(){
+        return mProducts;
     }
 
     public void setProducts(List<Product> products) {

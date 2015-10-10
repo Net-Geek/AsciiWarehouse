@@ -3,22 +3,31 @@
     <color name="colorPrimary">#2196f3</color>
     <color name="colorPrimaryDark">#1976d2</color>
     <color name="colorAccent">#82b1ff</color>
+    <color name="colorBackground">#424242</color>
 
-    <integer-array name="randomColorArray">
-        <item>@color/red_500</item>
-        <item>@color/pink_500</item>
-        <item>@color/purple_500</item>
-        <item>@color/green_500</item>
-        <item>@color/orange_500</item>
-        <item>@color/blue_500</item>
-        <item>@color/deep_orange_500</item>
-        <item>@color/light_blue_500</item>
-        <item>@color/indigo_500</item>
-        <item>@color/teal_500</item>
-        <item>@color/deep_purple_500</item>
-        <item>@color/cyan_500</item>
-        <item>@color/light_green_500</item>
-    </integer-array>
+    <color name="text_light">@android:color/white</color>
+    <color name="text_dark">#616161</color>
+
+    <color name="theme_blue_primary_background">#84ffff</color>
+    <color name="theme_blue_secondary_background">#03a9f4</color>
+    <color name="theme_blue_primary_text">@color/text_dark</color>
+    <color name="theme_blue_secondary_text">@color/text_light</color>
+
+    <color name="theme_green_primary_background">#b9f6ca</color>
+    <color name="theme_green_secondary_background">#1de9b6</color>\
+    <color name="theme_green_text">@color/text_dark</color>]
+
+    <color name="theme_purple_primary_background">#b388ff</color>
+    <color name="theme_purple_secondary_background">#7e57c2</color>
+    <color name="theme_purple_text">@color/text_light</color>
+
+    <color name="theme_red_primary_background">#ff8a80</color>
+    <color name="theme_red_secondary_background">#ff5252</color>
+    <color name="theme_red_text">@color/text_light</color>
+
+    <color name="theme_yellow_primary_background">#ffff8d</color>
+    <color name="theme_yellow_secondary_background">#ffeb3b</color>
+    <color name="theme_yellow_text">@color/text_dark</color>
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
