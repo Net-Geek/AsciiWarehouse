@@ -1,11 +1,11 @@
 package io.github.netgeek.asciiwarehouse.fragment;
 
 import android.databinding.DataBindingUtil;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +35,7 @@ public class ProductSelectionFragment extends Fragment {
     FragmentProductSelectionBinding fragmentProductSelectionBinding;
 
     private ProductAPI productAPI;
+    private Callback<List<Product>> productCallback;
     private ProductsRecyclerAdapter productsRecyclerAdapter;
     private GridLayoutManager gridLayoutManager;
 
@@ -73,25 +74,31 @@ public class ProductSelectionFragment extends Fragment {
     private void initProducts() {
         initProductAPI();
 
-        Call<List<Product>> products = productAPI.products();
+        final Call<List<Product>> products = productAPI.products();
 
-        products.enqueue(new Callback<List<Product>>() {
+        productCallback = new Callback<List<Product>>() {
             @Override
             public void onResponse(Response<List<Product>> response, Retrofit retrofit) {
                 progressBar.setVisibility(View.GONE);
                 productsRecyclerAdapter.setProducts(response.body());
-                for (Product product : response.body()) {
-
-                    Log.e("product:", product.getFace() + " " + product.getId());
-                }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                Log.e("you", t.toString());
+                progressBar.setVisibility(View.GONE);
+                final Snackbar snackbar = Snackbar.make(productRecyclerView, R.string.network_error, Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                        progressBar.setVisibility(View.VISIBLE);
+                        products.clone().enqueue(productCallback);
+                    }
+                }).show();
             }
-        });
+        };
 
+        products.enqueue(productCallback);
 
     }
 
@@ -103,11 +110,10 @@ public class ProductSelectionFragment extends Fragment {
         productAPI = retrofit.create(ProductAPI.class);
     }
 
-    public void setSpanCount(int spanCount){
-        if (gridLayoutManager != null){
+    public void setSpanCount(int spanCount) {
+        if (gridLayoutManager != null) {
             gridLayoutManager.setSpanCount(spanCount);
             productsRecyclerAdapter.notifyDataSetChanged();
-
         }
     }
 }
