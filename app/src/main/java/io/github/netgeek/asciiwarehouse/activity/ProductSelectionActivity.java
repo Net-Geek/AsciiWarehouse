@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -54,6 +56,18 @@ public class ProductSelectionActivity extends AppCompatActivity {
             productFragment.setSpanCount(1);
         }
 
+        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search), new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                return true;
+            }
+        });
+
         this.mMenu = menu;
         return true;
     }
@@ -64,22 +78,21 @@ public class ProductSelectionActivity extends AppCompatActivity {
         MenuItem gridViewItem = mMenu.findItem(R.id.grid_view);
         MenuItem settingsViewItem = mMenu.findItem(R.id.action_settings);
 
-        if (item == listViewItem){
+        if (item == listViewItem) {
             productFragment.setSpanCount(1);
             listViewItem.setVisible(false);
             gridViewItem.setVisible(true);
             editor.putInt(Constants.spanCountKey, 1);
             editor.commit();
-        } else if (item == gridViewItem){
+        } else if (item == gridViewItem) {
             productFragment.setSpanCount(2);
             gridViewItem.setVisible(false);
             listViewItem.setVisible(true);
             editor.putInt(Constants.spanCountKey, 2);
             editor.commit();
-        } else if (item == settingsViewItem){
+        } else if (item == settingsViewItem) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

@@ -7,11 +7,13 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,9 @@ import io.github.netgeek.asciiwarehouse.api.ProductAPI;
 import io.github.netgeek.asciiwarehouse.constant.Constants;
 import io.github.netgeek.asciiwarehouse.converter.NDJsonConverterFactory;
 import io.github.netgeek.asciiwarehouse.databinding.FragmentProductSelectionBinding;
+import io.github.netgeek.asciiwarehouse.listener.EndlessScrollListener;
 import io.github.netgeek.asciiwarehouse.model.Product;
+
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -37,7 +41,10 @@ public class ProductSelectionFragment extends Fragment {
     FragmentProductSelectionBinding fragmentProductSelectionBinding;
 
     private ProductAPI productAPI;
-    private Callback<List<Product>> productCallback;
+    private Call<List<Product>> initProducts;
+    private Call<List<Product>> loadMoreProducts;
+    private Callback<List<Product>> initProductsCallback;
+    private Callback<List<Product>> loadMoreProductsCallback;
     private ProductsRecyclerAdapter productsRecyclerAdapter;
     private GridLayoutManager gridLayoutManager;
 
@@ -61,6 +68,12 @@ public class ProductSelectionFragment extends Fragment {
 
         productRecyclerView.setAdapter(productsRecyclerAdapter);
         productRecyclerView.setLayoutManager(gridLayoutManager);
+        productRecyclerView.addOnScrollListener(new EndlessScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore() {
+                loadMoreProducts(productsRecyclerAdapter.getItemCount());
+            }
+        });
 
         if(savedInstanceState == null){
             initProducts();
@@ -84,9 +97,9 @@ public class ProductSelectionFragment extends Fragment {
     private void initProducts() {
         initProductAPI();
 
-        final Call<List<Product>> products = productAPI.products();
+        initProducts = productAPI.initProducts();
 
-        productCallback = new Callback<List<Product>>() {
+        initProductsCallback = new Callback<List<Product>>() {
             @Override
             public void onResponse(Response<List<Product>> response, Retrofit retrofit) {
                 progressBar.setVisibility(View.GONE);
@@ -102,13 +115,45 @@ public class ProductSelectionFragment extends Fragment {
                     public void onClick(View v) {
                         snackbar.dismiss();
                         progressBar.setVisibility(View.VISIBLE);
-                        products.clone().enqueue(productCallback);
+                        initProducts.clone().enqueue(initProductsCallback);
                     }
                 }).show();
             }
         };
 
-        products.enqueue(productCallback);
+        initProducts.enqueue(initProductsCallback);
+
+    }
+
+    private void loadMoreProducts(int productsToSkip) {
+        loadMoreProducts = productAPI.productsWithSkip(productsToSkip);
+
+        loadMoreProductsCallback = new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Response<List<Product>> response, Retrofit retrofit) {
+                productsRecyclerAdapter.addProducts(response.body());
+                Log.e("products added", "total products: " + productsRecyclerAdapter.getItemCount());
+                if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == productsRecyclerAdapter.getItemCount() - 11) {
+                    productRecyclerView.smoothScrollBy(0, 150);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                if (t instanceof ConnectException){
+                    final Snackbar snackbar = Snackbar.make(productRecyclerView, R.string.network_error, Snackbar.LENGTH_INDEFINITE);
+                    snackbar.setAction("retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.dismiss();
+                            loadMoreProducts.clone().enqueue(loadMoreProductsCallback);
+                        }
+                    }).show();
+                }
+            }
+        };
+
+        loadMoreProducts.enqueue(loadMoreProductsCallback);
 
     }
 

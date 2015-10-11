@@ -10,10 +10,10 @@ import retrofit.http.Query;
 public interface ProductAPI {
 
     @GET("/api/search")
-    Call<List<Product>> products();
+    Call<List<Product>> initProducts();
 
     @GET("/api/search")
-    Call<List<Product>> productsWithLimit(@Query("limit") int limit);
+    Call<List<Product>> productsWithSkip(@Query("skip") int skip);
 
     @GET("/api/search")
     Call<List<Product>> productsWithTag(@Query("q") String tag);

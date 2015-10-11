@@ -45,10 +45,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textColor="@{product.primaryTextColor}"
                     android:textSize="@{product.size}"
-                    android:text="@{product.face}"
-                    tools:text="( ⚆ _ ⚆ )"/>
+                    android:textColor="@{product.primaryTextColor}"
+                    app:face="@{product.face}"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

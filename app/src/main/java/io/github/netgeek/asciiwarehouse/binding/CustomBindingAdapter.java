@@ -1,11 +1,22 @@
 package io.github.netgeek.asciiwarehouse.binding;
 
 import android.databinding.BindingAdapter;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
+import io.github.netgeek.asciiwarehouse.util.FontUtil;
+
 public class CustomBindingAdapter {
+
+    @BindingAdapter("app:face")
+    public static void setFace(TextView textView, String face) {
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            textView.setTypeface(FontUtil.get(textView.getContext(), "fonts/CODE2000.TTF"));
+        }
+        textView.setText(face);
+    }
 
     @BindingAdapter("android:textSize")
     public static void setTextSize(TextView textView, int textSize) {
@@ -13,8 +24,8 @@ public class CustomBindingAdapter {
     }
 
     @BindingAdapter("android:textColor")
-    public static void setTextColor(TextView textView, int resId) {
-        textView.setTextColor(textView.getResources().getColor(resId));
+    public static void setTextColor(TextView textView, int color) {
+        textView.setTextColor(color);
     }
 
     @BindingAdapter("android:background")

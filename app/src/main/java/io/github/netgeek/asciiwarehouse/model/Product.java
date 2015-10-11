@@ -2,7 +2,12 @@ package io.github.netgeek.asciiwarehouse.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.Html;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
