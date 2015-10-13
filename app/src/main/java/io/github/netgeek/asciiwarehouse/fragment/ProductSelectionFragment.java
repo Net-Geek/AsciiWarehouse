@@ -88,12 +88,6 @@ public class ProductSelectionFragment extends Fragment {
         return fragmentProductSelectionBinding.getRoot();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
     private void initProducts() {
         initProductAPI();
 

@@ -26,5 +26,6 @@
         </android.support.design.widget.AppBarLayout>
 
         <include layout="@layout/content_product_selection"/>
+
     </android.support.design.widget.CoordinatorLayout>
 </layout>
