@@ -52,12 +52,6 @@ public class ProductSelectionFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(Constants.productArrayKey, (ArrayList<? extends Parcelable>) productsRecyclerAdapter.getProducts());
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentProductSelectionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_selection, container, false);
         progressBar = fragmentProductSelectionBinding.progressbar;
@@ -86,6 +80,12 @@ public class ProductSelectionFragment extends Fragment {
         }
 
         return fragmentProductSelectionBinding.getRoot();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.productArrayKey, (ArrayList<? extends Parcelable>) productsRecyclerAdapter.getProducts());
     }
 
     private void initProducts() {

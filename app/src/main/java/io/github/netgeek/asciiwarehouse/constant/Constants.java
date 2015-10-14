@@ -8,6 +8,9 @@ import io.github.netgeek.asciiwarehouse.R;
 public class Constants {
     public static final String apiUrl = "http://74.50.59.155:5000";
 
+    public static final String ProductSelectionFragment = "ProductSelectionFragment";
+    public static final String ProductSearchFragment = "ProductSearchFragment";
+
     public static final String productArrayKey = "ProductsList";
     public static final String spanCountKey = "SpanCount";
 

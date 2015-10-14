@@ -1,5 +1,6 @@
 package io.github.netgeek.asciiwarehouse.activity;
 
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -21,9 +22,10 @@ import io.github.netgeek.asciiwarehouse.fragment.ProductSelectionFragment;
  */
 public class ProductSelectionActivity extends AppCompatActivity {
 
-    ProductSelectionFragment productFragment;
+    ProductSelectionFragment productSelectionFragment;
     ProductSearchFragment productSearchFragment;
     private Menu mMenu;
+    private MenuItem mSearchItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,24 @@ public class ProductSelectionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        productFragment = (ProductSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.product_selection_fragment);
-        productSearchFragment = new ProductSearchFragment();
+        productSelectionFragment = (ProductSelectionFragment) getSupportFragmentManager().findFragmentByTag(Constants.ProductSelectionFragment);
+        productSearchFragment = (ProductSearchFragment) getSupportFragmentManager().findFragmentByTag(Constants.ProductSearchFragment);
+
+        if (savedInstanceState == null){
+            productSelectionFragment = new ProductSelectionFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentHolder, productSelectionFragment, Constants.ProductSelectionFragment)
+                    .commit();
+        } else {
+            if (productSelectionFragment != null){
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentHolder, productSelectionFragment, Constants.ProductSelectionFragment)
+                        .commit();
+            }
+            if (productSearchFragment != null){
+                getSupportFragmentManager().beginTransaction().hide(productSelectionFragment).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fragmentHolder, productSearchFragment = new ProductSearchFragment(), Constants.ProductSearchFragment)
+                        .addToBackStack(null).commit();
+            }
+        }
     }
 
     @Override
@@ -44,24 +62,25 @@ public class ProductSelectionActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_product_selection, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.getIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+        mSearchItem = menu.findItem(R.id.action_search);
+        mSearchItem.getIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
 
         if (getSpanCount() == 2){
             menu.findItem(R.id.list_view).setVisible(true);
             menu.findItem(R.id.grid_view).setVisible(false);
-            productFragment.setSpanCount(2);
+            productSelectionFragment.setSpanCount(2);
         } else {
             menu.findItem(R.id.list_view).setVisible(false);
             menu.findItem(R.id.grid_view).setVisible(true);
-            productFragment.setSpanCount(1);
+            productSelectionFragment.setSpanCount(1);
         }
 
-        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search), new MenuItemCompat.OnActionExpandListener() {
+        MenuItemCompat.setOnActionExpandListener(mSearchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 setMenuItemsVisibility(menu, item, getSpanCount() == 2 ? menu.findItem(R.id.grid_view) : menu.findItem(R.id.list_view), false);
-                getSupportFragmentManager().beginTransaction().replace(R.id.product_selection_fragment, productSearchFragment)
+                getSupportFragmentManager().beginTransaction().hide(productSelectionFragment).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fragmentHolder, productSearchFragment = new ProductSearchFragment(), Constants.ProductSearchFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
                 return true;
             }
@@ -70,6 +89,7 @@ public class ProductSelectionActivity extends AppCompatActivity {
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 setMenuItemsVisibility(menu, item, getSpanCount() == 2 ? menu.findItem(R.id.grid_view) : menu.findItem(R.id.list_view), true);
                 onBackPressed();
+                getSupportFragmentManager().beginTransaction().show(productSelectionFragment).commit();
                 return true;
             }
         });
@@ -85,12 +105,12 @@ public class ProductSelectionActivity extends AppCompatActivity {
         MenuItem settingsViewItem = mMenu.findItem(R.id.action_settings);
 
         if (item == listViewItem) {
-            productFragment.setSpanCount(1);
+            productSelectionFragment.setSpanCount(1);
             listViewItem.setVisible(false);
             gridViewItem.setVisible(true);
             setSpanCount(1);
         } else if (item == gridViewItem) {
-            productFragment.setSpanCount(2);
+            productSelectionFragment.setSpanCount(2);
             gridViewItem.setVisible(false);
             listViewItem.setVisible(true);
             setSpanCount(2);
